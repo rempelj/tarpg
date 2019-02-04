@@ -6,11 +6,3 @@ namespace Game
 {
 	extern Scene activeScene;
 }
-
-namespace Time
-{
-	extern float deltaTime;
-
-}
-
-

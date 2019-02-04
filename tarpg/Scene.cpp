@@ -1,5 +1,5 @@
 #include "Scene.h"
-#include "Main.h"
+#include "Screen.h"
 
 void Scene::Update()
 {
@@ -19,6 +19,10 @@ void Scene::Render()
 		Screen::screen[i] = ' ';
 	}
 
-
+	// Tell renderers to render themselves
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		gameObjects[i].renderer->Render();
+	}
 
 }

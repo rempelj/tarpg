@@ -5,30 +5,9 @@
 #include <chrono>
 
 #include "Main.h"
+#include "Screen.h"
 
 using namespace std;
-
-
-namespace Screen
-{
-	wchar_t *screen;
-	int screenSizeX = 120;			// Console Screen Size X (columns)
-	int screenSizeY = 40;			// Console Screen Size Y (rows)
-}
-
-
-namespace Time
-{
-	float deltaTime = 0;
-
-}
-
-namespace Game
-{
-	Scene activeScene;
-}
-
-
 
 int main()
 {

@@ -5,7 +5,7 @@
 class Renderer : public GameComponent
 {
 public:
-	
-
 	void Update();
+
+	void Render();
 };

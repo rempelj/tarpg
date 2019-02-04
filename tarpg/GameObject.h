@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+
 #include "Transform.h"
+#include "Renderer.h"
 
 class GameObject
 {
@@ -10,5 +12,9 @@ private:
 
 public:
 	Transform *transform;
+	Renderer *renderer;
+
 	void Update();
+
+	template<class T>GameComponent* AddComponent();
 };
