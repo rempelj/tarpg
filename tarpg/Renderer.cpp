@@ -15,7 +15,6 @@ Renderer::Renderer()
 
 void Renderer::Update()
 {
-
 }
 
 void Renderer::Render()

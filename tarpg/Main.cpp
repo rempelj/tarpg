@@ -1,8 +1,6 @@
 #include <locale>
 #include <codecvt>
-#include <iostream>
 #include <string>
-#include <Windows.h>
 #include <chrono>
 
 #include "Main.h"
@@ -12,7 +10,7 @@
 #include "Transform.h"
 #include "GameComponent.h"
 #include "Renderer.h"
-
+#include "WindowsScreenBuffer.h"
 
 using namespace std;
 
@@ -24,9 +22,18 @@ int main()
 
 	// Create Screen Buffer
 	Screen::screen = new wchar_t[Screen::screenSizeX * Screen::screenSizeY];
-	HANDLE hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-	SetConsoleActiveScreenBuffer(hConsole);
-	DWORD dwBytesWritten = 0;
+	ScreenBuffer *screenBuffer;
+#if defined(_WIN64) || defined(_WIN32)
+	screenBuffer = &WindowsScreenBuffer();
+#elif defined(__APPLE__)
+	screenBuffer = &AppleScreenBuffer();
+#elif defined(__linux__)
+	screenBuffer = &LinuxScreenBuffer();
+#elif defined(__unix__)
+	screenBuffer = &UnixScreenBuffer();
+#else
+#   error "Unknown platform"
+#endif
 
 	// Setup game
 	Game::activeScene = Scene();
@@ -56,13 +63,8 @@ int main()
 		Game::activeScene.Update();
 		Game::activeScene.Render();
 
-		// Show some info
-		swprintf_s(Screen::screen, 40, L"FPS=%3.2f ", 1.0f / Time::deltaTime);
-
-		// Display Frame
-		Screen::screen[Screen::screenSizeX * Screen::screenSizeY - 1] = '\0';
-		WriteConsoleOutputCharacter(hConsole, Screen::screen, Screen::screenSizeX * Screen::screenSizeY, { 0,0 }, &dwBytesWritten);
-		
+		// Refresh the screen
+		screenBuffer->Refresh();
 	}
 
 	return 0;
