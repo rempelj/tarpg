@@ -4,8 +4,9 @@
 #include <string>
 
 
-#include "Transform.h"
-#include "Renderer.h"
+class GameComponent;
+class Transform;
+class Renderer;
 
 class GameObject
 {
@@ -24,3 +25,13 @@ public:
 
 	template<class T>T* AddComponent();
 };
+
+
+template<typename T> T* GameObject::AddComponent()
+{
+	GameComponent *comp = (GameComponent*) new T();
+
+	comp->gameObject = this;
+	components.push_back(comp);
+	return (T*)comp;
+}

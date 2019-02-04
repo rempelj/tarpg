@@ -3,6 +3,7 @@
 #include "PlayerCharacter.h"
 #include "GameObject.h"
 #include "Time.h"
+#include  "Transform.h"
 
 void PlayerCharacter::Update()
 {

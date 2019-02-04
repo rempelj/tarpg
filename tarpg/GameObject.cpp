@@ -2,6 +2,7 @@
 #include "Transform.h"
 #include "Renderer.h"
 #include "Game.h"
+#include "Scene.h"
 
 GameObject::GameObject() : GameObject::GameObject("New GameObject") {}
 
@@ -23,11 +24,3 @@ void GameObject::Update()
 	}
 }
 
-template<typename T> T* GameObject::AddComponent()
-{
-	GameComponent *comp = (GameComponent*) new T();
-
-	comp->gameObject = this;
-	components.push_back(comp);
-	return (T*)comp;
-}

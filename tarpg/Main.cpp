@@ -7,6 +7,10 @@
 #include "Main.h"
 #include "Screen.h"
 #include "PlayerCharacter.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "GameComponent.h"
+
 
 using namespace std;
 

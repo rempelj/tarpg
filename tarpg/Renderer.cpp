@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Screen.h"
 #include "GameObject.h"
+#include "Transform.h"
 
 void Renderer::Update()
 {
