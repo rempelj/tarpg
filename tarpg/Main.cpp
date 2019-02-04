@@ -1,4 +1,5 @@
-
+#include <locale>
+#include <codecvt>
 #include <iostream>
 #include <string>
 #include <Windows.h>
@@ -10,6 +11,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "GameComponent.h"
+#include "Renderer.h"
 
 
 using namespace std;
@@ -29,8 +31,16 @@ int main()
 	// Setup game
 	Game::activeScene = Scene();
 
+	wstring playerGfx;
+	playerGfx += LR"( __  @    /)";
+	playerGfx += LR"(|  | .   / )";
+	playerGfx += LR"(\__/ .  O  )";
+	playerGfx += LR"(    / \    )";
+	playerGfx += LR"(    L  L   )";
+
 	GameObject player = GameObject("Player");
 	player.AddComponent<PlayerCharacter>();
+	player.renderer->SetGraphic(playerGfx, 11, 5);
 	player.transform->x = 10;
 	player.transform->y = 10;
 
@@ -52,6 +62,7 @@ int main()
 		// Display Frame
 		Screen::screen[Screen::screenSizeX * Screen::screenSizeY - 1] = '\0';
 		WriteConsoleOutputCharacter(hConsole, Screen::screen, Screen::screenSizeX * Screen::screenSizeY, { 0,0 }, &dwBytesWritten);
+		
 	}
 
 	return 0;

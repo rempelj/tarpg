@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
+
+
 void Scene::Update()
 {
 	for (int i = 0; i < gameObjects.size(); i++)

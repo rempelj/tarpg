@@ -6,6 +6,6 @@ namespace Screen
 	extern int screenSizeX;			// Console Screen Size X (columns)
 	extern int screenSizeY;			// Console Screen Size Y (rows)
 
-	int Get(int x, int y);
+	char Get(int x, int y);
 	void Set(int x, int y, char value);
 }

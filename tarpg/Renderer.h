@@ -4,8 +4,15 @@
 
 class Renderer : public GameComponent
 {
-public:
-	void Update();
+private:
+	std::wstring graphic;
+	int graphicSizeX;
+	int graphicSizeY;
 
+public:
+	Renderer();
+
+	void Update();
 	void Render();
+	void SetGraphic(std::wstring graphic, int sizeX, int sizeY);
 };

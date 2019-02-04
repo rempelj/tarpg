@@ -6,5 +6,6 @@ class GameComponent
 {
 public:
 	GameObject *gameObject;
+
 	virtual void Update();
 };
