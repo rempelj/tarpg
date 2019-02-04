@@ -1,4 +1,5 @@
 #include <string>
+#include <assert.h>
 
 #include "Renderer.h"
 #include "Screen.h"
@@ -29,24 +30,25 @@ void Renderer::Render()
 		
 		Screen::Set(
 			(int)std::round(gameObject->transform->x + x),
-			(int)std::round(gameObject->transform->y + y),
+			(int)std::round(gameObject->transform->y + y - graphicSizeY + 1),	// render bottom-left char at my position
 			currentChar
 		);
 		
 
 		// next char
 		x++;
-		if (x >= graphicSizeX - 1)
+		if (x >= graphicSizeX)
 		{
 			x = 0;
 			y++;
 		}
 	}
-
 }
 
 void Renderer::SetGraphic(std::wstring graphic, int sizeX, int sizeY)
 {
+	assert(("Character count does not match sizeX and sizeY", graphic.size() == sizeX * sizeY));
+
 	this->graphic = graphic;
 	this->graphicSizeX = sizeX;
 	this->graphicSizeY = sizeY;

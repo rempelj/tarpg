@@ -7,17 +7,17 @@
 
 void PlayerCharacter::Update()
 {
-	const float speed = 20;
+	const float speed = 40;
 
 	// Handle Movement
 	if (GetAsyncKeyState(VK_UP))
 	{
-		gameObject->transform->y -= 1 * speed * Time::deltaTime;
+		gameObject->transform->y -= 1 * speed/2 * Time::deltaTime;
 	}
 
 	if (GetAsyncKeyState(VK_DOWN))
 	{
-		gameObject->transform->y += 1 * speed * Time::deltaTime;
+		gameObject->transform->y += 1 * speed/2 * Time::deltaTime;
 	}
 
 	if (GetAsyncKeyState(VK_LEFT))
