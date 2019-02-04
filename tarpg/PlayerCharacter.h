@@ -5,5 +5,6 @@
 class PlayerCharacter : GameComponent
 {
 public:
+	PlayerCharacter(GameObject* go);
 	void Update();
 };

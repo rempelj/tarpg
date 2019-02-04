@@ -6,11 +6,11 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-Renderer::Renderer()
+Renderer::Renderer(GameObject *go) : GameComponent::GameComponent(go)
 {
 	this->graphic = L"?";
-	this->graphicSizeX = 1;
-	this->graphicSizeY = 1;
+	this->graphicSizeX = 0;
+	this->graphicSizeY = 0;
 }
 
 void Renderer::Update()

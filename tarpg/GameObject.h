@@ -20,6 +20,7 @@ public:
 
 	GameObject();
 	GameObject(std::string name);
+	~GameObject();
 
 	void Update();
 
@@ -29,9 +30,9 @@ public:
 
 template<typename T> T* GameObject::AddComponent()
 {
-	GameComponent *comp = (GameComponent*) new T();
+	T *comp = new T(this);
 
-	comp->gameObject = this;
-	components.push_back(comp);
-	return (T*)comp;
+	components.push_back((GameComponent*) comp);
+
+	return comp;
 }

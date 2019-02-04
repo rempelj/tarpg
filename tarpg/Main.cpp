@@ -6,8 +6,6 @@
 #include "PlayerCharacter.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "GameComponent.h"
-#include "Renderer.h"
 #include "WindowsScreenBuffer.h"
 
 int main()
@@ -33,16 +31,8 @@ int main()
 	// Setup game
 	Game::activeScene = Scene();
 
-	std::wstring playerGfx;
-	playerGfx += LR"( __  @    /)";
-	playerGfx += LR"(|  | .   / )";
-	playerGfx += LR"(\__/ .  O  )";
-	playerGfx += LR"(    / \    )";
-	playerGfx += LR"(    L  L   )";
-
 	GameObject player = GameObject("Player");
 	player.AddComponent<PlayerCharacter>();
-	player.renderer->SetGraphic(playerGfx, 11, 5);
 	player.transform->x = 10;
 	player.transform->y = 10;
 

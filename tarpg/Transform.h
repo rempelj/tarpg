@@ -8,5 +8,6 @@ public:
 	float x;
 	float y;
 
+	Transform(GameObject* go);
 	void Update();
 };

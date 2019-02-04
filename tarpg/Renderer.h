@@ -10,7 +10,7 @@ private:
 	int graphicSizeY;
 
 public:
-	Renderer();
+	Renderer(GameObject* go);
 
 	void Update();
 	void Render();

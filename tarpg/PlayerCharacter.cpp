@@ -4,6 +4,20 @@
 #include "GameObject.h"
 #include "Time.h"
 #include  "Transform.h"
+#include  "Renderer.h"
+
+
+PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(go)
+{
+	std::wstring playerGfx;
+	playerGfx += LR"( __  @    /)";
+	playerGfx += LR"(|  | .   / )";
+	playerGfx += LR"(\__/ .  O  )";
+	playerGfx += LR"(    / \    )";
+	playerGfx += LR"(    L  L   )";
+
+	gameObject->renderer->SetGraphic(playerGfx, 11, 5);
+}
 
 void PlayerCharacter::Update()
 {
