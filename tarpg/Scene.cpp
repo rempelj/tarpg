@@ -5,10 +5,8 @@ void Scene::Update()
 {
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		gameObjects[i].Update();
+		gameObjects[i]->Update();
 	}
-
-
 }
 
 void Scene::Render()
@@ -22,7 +20,12 @@ void Scene::Render()
 	// Tell renderers to render themselves
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		gameObjects[i].renderer->Render();
+		gameObjects[i]->renderer->Render();
 	}
 
+}
+
+void Scene::AddGameObject(GameObject *gameObject)
+{
+	gameObjects.push_back(gameObject);
 }

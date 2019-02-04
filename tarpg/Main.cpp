@@ -6,6 +6,7 @@
 
 #include "Main.h"
 #include "Screen.h"
+#include "PlayerCharacter.h"
 
 using namespace std;
 
@@ -21,8 +22,13 @@ int main()
 	SetConsoleActiveScreenBuffer(hConsole);
 	DWORD dwBytesWritten = 0;
 
-	// Setup 
+	// Setup game
 	Game::activeScene = Scene();
+
+	GameObject player = GameObject("Player");
+	player.AddComponent<PlayerCharacter>();
+	player.transform->x = 10;
+	player.transform->y = 10;
 
 	while (1)
 	{
