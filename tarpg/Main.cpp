@@ -1,5 +1,3 @@
-#include <locale>
-#include <codecvt>
 #include <string>
 #include <chrono>
 
@@ -12,25 +10,22 @@
 #include "Renderer.h"
 #include "WindowsScreenBuffer.h"
 
-using namespace std;
-
 int main()
 {
 	// vars for storing delta time
-	auto tp1 = chrono::system_clock::now();
-	auto tp2 = chrono::system_clock::now();
+	auto tp1 = std::chrono::system_clock::now();
+	auto tp2 = std::chrono::system_clock::now();
 
 	// Create Screen Buffer
 	Screen::screen = new wchar_t[Screen::screenSizeX * Screen::screenSizeY];
-	ScreenBuffer *screenBuffer;
 #if defined(_WIN64) || defined(_WIN32)
-	screenBuffer = &WindowsScreenBuffer();
+	WindowsScreenBuffer screenBuffer = WindowsScreenBuffer();
 #elif defined(__APPLE__)
-	screenBuffer = &AppleScreenBuffer();
+	AppleScreenBuffer = screenBuffer = AppleScreenBuffer();
 #elif defined(__linux__)
-	screenBuffer = &LinuxScreenBuffer();
+	LinuxScreenBuffer = screenBuffer = LinuxScreenBuffer();
 #elif defined(__unix__)
-	screenBuffer = &UnixScreenBuffer();
+	UnixScreenBuffer = screenBuffer = UnixScreenBuffer();
 #else
 #   error "Unknown platform"
 #endif
@@ -38,7 +33,7 @@ int main()
 	// Setup game
 	Game::activeScene = Scene();
 
-	wstring playerGfx;
+	std::wstring playerGfx;
 	playerGfx += LR"( __  @    /)";
 	playerGfx += LR"(|  | .   / )";
 	playerGfx += LR"(\__/ .  O  )";
@@ -54,8 +49,8 @@ int main()
 	while (1)
 	{
 		// Update delta time
-		tp2 = chrono::system_clock::now();
-		chrono::duration<float> elapsedTime = tp2 - tp1;
+		tp2 = std::chrono::system_clock::now();
+		std::chrono::duration<float> elapsedTime = tp2 - tp1;
 		tp1 = tp2;
 		Time::deltaTime = elapsedTime.count();
 
@@ -64,7 +59,7 @@ int main()
 		Game::activeScene.Render();
 
 		// Refresh the screen
-		screenBuffer->Refresh();
+		screenBuffer.Refresh();
 	}
 
 	return 0;
