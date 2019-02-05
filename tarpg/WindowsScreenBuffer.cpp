@@ -29,8 +29,8 @@ void WindowsScreenBuffer::Refresh()
 	int mapWidth = Game::activeScene.map->GetSizeX();
 	int mapHeight = Game::activeScene.map->GetSizeY();
 
-	int mapOffsetX = Screen::screenSizeX - mapWidth;
-	int mapOffsetY = Screen::screenSizeY - mapHeight;
+	int mapOffsetX = Screen::screenSizeX - mapWidth - 1;
+	int mapOffsetY = Screen::screenSizeY - mapHeight - 1;
 
 	// Clear map
 	for (int nx = 0; nx < mapWidth; nx++)
