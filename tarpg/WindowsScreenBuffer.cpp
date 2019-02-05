@@ -22,12 +22,15 @@ WindowsScreenBuffer::WindowsScreenBuffer()
 void WindowsScreenBuffer::Refresh()
 {
 	// Show some info
-	swprintf_s(Screen::screen, 40, L"FPS=%3.2f ", 1.0f / Time::deltaTime);
+	swprintf_s(Screen::screen, Screen::screenSizeX, L"FPS=%3.2f ", 1.0f / Time::deltaTime);
 
 
 	// Display Map
 	int mapWidth = Game::activeScene.map->GetSizeX();
 	int mapHeight = Game::activeScene.map->GetSizeY();
+
+	int mapOffsetX = Screen::screenSizeX - mapWidth;
+	int mapOffsetY = Screen::screenSizeY - mapHeight;
 
 	// Clear map
 	for (int nx = 0; nx < mapWidth; nx++)
@@ -36,7 +39,7 @@ void WindowsScreenBuffer::Refresh()
 		{
 			char tile = '.';
 
-			Screen::screen[(ny+1)*Screen::screenSizeX + nx] = tile;
+			Screen::screen[(ny+ mapOffsetY)*Screen::screenSizeX + (nx+mapOffsetX)] = tile;
 		}
 	}
 
@@ -47,11 +50,11 @@ void WindowsScreenBuffer::Refresh()
 	{
 		char tile = (*iter)->icon;
 
-		Screen::Set((*iter)->transform->x / Map::TILE_WIDTH, ((*iter)->transform->y / Map::TILE_HEIGHT)+1, tile);
+		Screen::Set(((*iter)->transform->x / Map::TILE_WIDTH) + mapOffsetX, ((*iter)->transform->y / Map::TILE_HEIGHT)+ mapOffsetY, tile);
 	}
 
 	// Display camera position
-	Screen::Set(Game::activeScene.camX / Map::TILE_WIDTH, (Game::activeScene.camY / Map::TILE_HEIGHT)+1, '@');
+	Screen::Set((Game::activeScene.camX / Map::TILE_WIDTH) + mapOffsetX, (Game::activeScene.camY / Map::TILE_HEIGHT)+ mapOffsetY, '@');
 
 
 	// Display Frame
