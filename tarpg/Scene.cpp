@@ -4,7 +4,13 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
-
+Scene::~Scene()
+{
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		delete gameObjects[i];
+	}
+}
 
 void Scene::Update()
 {

@@ -2,7 +2,7 @@
 
 #include "GameComponent.h"
 
-class PlayerCharacter : GameComponent
+class PlayerCharacter : public GameComponent
 {
 public:
 	PlayerCharacter(GameObject* go);

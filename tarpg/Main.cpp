@@ -3,10 +3,8 @@
 
 #include "Main.h"
 #include "Screen.h"
-#include "PlayerCharacter.h"
-#include "GameObject.h"
-#include "Transform.h"
 #include "WindowsScreenBuffer.h"
+#include "Map.h"
 
 int main()
 {
@@ -31,10 +29,25 @@ int main()
 	// Setup game
 	Game::activeScene = Scene();
 
-	GameObject player = GameObject("Player");
-	player.AddComponent<PlayerCharacter>();
-	player.transform->x = 10;
-	player.transform->y = 10;
+	std::wstring mapLayout;
+	mapLayout += LR"(............................)";	// . ground
+	mapLayout += LR"(.......................X....)";	// # wall
+	mapLayout += LR"(............................)";	// @ player
+	mapLayout += LR"(........##...######.........)";	// Q quest
+	mapLayout += LR"(........#.........#.....X...)";	// ^ house
+	mapLayout += LR"(........#....Q.^..#.........)";	// X monster
+	mapLayout += LR"(..X.....#.........#.........)";
+	mapLayout += LR"(........#..@......#.........)";
+	mapLayout += LR"(........#.........#.........)";
+	mapLayout += LR"(........######...##.........)";
+	mapLayout += LR"(............................)";
+	mapLayout += LR"(............................)";
+	mapLayout += LR"(.......X....................)";
+	mapLayout += LR"(............................)";
+	
+	Map map = Map();
+	map.SetLayout(mapLayout, 28, 14);
+	map.ApplyToActiveScene();
 
 	while (1)
 	{

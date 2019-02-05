@@ -27,12 +27,14 @@ void Renderer::Render()
 		int index = x + graphicSizeX*y;
 		char currentChar = graphic[index];
 		
-		Screen::Set(
-			(int)std::round(gameObject->transform->x + x),
-			(int)std::round(gameObject->transform->y + y - graphicSizeY + 1),	// render bottom-left char at my position
-			currentChar
-		);
-		
+		if (currentChar != ' ')
+		{
+			Screen::Set(
+				(int)std::round(gameObject->transform->x + x),
+				(int)std::round(gameObject->transform->y + y - graphicSizeY + 1),	// render bottom-left char at my position
+				currentChar
+			);
+		}
 
 		// next char
 		x++;
