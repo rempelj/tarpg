@@ -36,7 +36,7 @@ void WindowsScreenBuffer::Refresh()
 		{
 			char tile = '.';
 
-			Screen::screen[(ny + 1)*Screen::screenSizeX + nx] = tile;
+			Screen::screen[(ny+1)*Screen::screenSizeX + nx] = tile;
 		}
 	}
 
@@ -47,8 +47,12 @@ void WindowsScreenBuffer::Refresh()
 	{
 		char tile = (*iter)->icon;
 
-		Screen::Set((*iter)->transform->x / Map::TILE_WIDTH, (*iter)->transform->y / Map::TILE_HEIGHT, tile);
+		Screen::Set((*iter)->transform->x / Map::TILE_WIDTH, ((*iter)->transform->y / Map::TILE_HEIGHT)+1, tile);
 	}
+
+	// Display camera position
+	Screen::Set(Game::activeScene.camX / Map::TILE_WIDTH, (Game::activeScene.camY / Map::TILE_HEIGHT)+1, '@');
+
 
 	// Display Frame
 	Screen::screen[Screen::screenSizeX * Screen::screenSizeY - 1] = '\0';

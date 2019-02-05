@@ -32,7 +32,7 @@ void Map::ApplyToActiveScene()
 
 		if (tile == '@')
 		{
-			GameObject *player = new GameObject("Player", '@');
+			GameObject *player = new GameObject("Player");
 			player->AddComponent<PlayerCharacter>();
 			player->transform->x = x * Map::TILE_WIDTH;
 			player->transform->y = y * Map::TILE_HEIGHT;
