@@ -6,6 +6,8 @@
 #include "PlayerCharacter.h"
 #include "Transform.h"
 #include "Wall.h"
+#include "Game.h"
+#include "Scene.h"
 
 
 void Map::SetLayout(std::wstring layout, int sizeX, int sizeY)
@@ -19,6 +21,8 @@ void Map::SetLayout(std::wstring layout, int sizeX, int sizeY)
 
 void Map::ApplyToActiveScene()
 {
+	Game::activeScene.map = this;
+
 	int x = 0;
 	int y = 0;
 
@@ -28,14 +32,14 @@ void Map::ApplyToActiveScene()
 
 		if (tile == '@')
 		{
-			GameObject *player = new GameObject("Player");
+			GameObject *player = new GameObject("Player", '@');
 			player->AddComponent<PlayerCharacter>();
 			player->transform->x = x * Map::TILE_WIDTH;
 			player->transform->y = y * Map::TILE_HEIGHT;
 		}
 		else if (tile == '#')
 		{
-			GameObject *wall = new GameObject("Wall");
+			GameObject *wall = new GameObject("Wall", '#');
 			wall->AddComponent<Wall>();
 			wall->transform->x = x * Map::TILE_WIDTH;
 			wall->transform->y = y * Map::TILE_HEIGHT;

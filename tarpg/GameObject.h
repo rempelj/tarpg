@@ -11,15 +11,18 @@ class Renderer;
 class GameObject
 {
 private:
-	std::string name;
 	std::vector<GameComponent*> components;
 
 public:
+	std::string name;
+	char icon;
+
 	Transform *transform;
 	Renderer *renderer;
 
 	GameObject();
 	GameObject(std::string name);
+	GameObject(std::string name, char icon);
 	~GameObject();
 
 	void Update();

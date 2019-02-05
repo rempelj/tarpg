@@ -3,8 +3,10 @@
 #include "PlayerCharacter.h"
 #include "GameObject.h"
 #include "Time.h"
-#include  "Transform.h"
-#include  "Renderer.h"
+#include "Transform.h"
+#include "Renderer.h"
+#include "Game.h"
+#include "Scene.h"
 
 
 PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(go)
@@ -43,4 +45,8 @@ void PlayerCharacter::Update()
 	{
 		gameObject->transform->x += 1 * speed * Time::deltaTime;
 	}
+
+	// center the camera on the player
+	Game::activeScene.camX = gameObject->transform->x;
+	Game::activeScene.camY = gameObject->transform->y;
 }

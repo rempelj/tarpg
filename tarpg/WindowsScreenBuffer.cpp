@@ -3,6 +3,11 @@
 #include "WindowsScreenBuffer.h"
 #include "Screen.h"
 #include "Time.h"
+#include "Map.h"
+#include "Game.h"
+#include "Scene.h"
+#include "Transform.h"
+#include "GameObject.h"
 
 #include <iostream>
 #include <Windows.h>
@@ -18,6 +23,32 @@ void WindowsScreenBuffer::Refresh()
 {
 	// Show some info
 	swprintf_s(Screen::screen, 40, L"FPS=%3.2f ", 1.0f / Time::deltaTime);
+
+
+	// Display Map
+	int mapWidth = Game::activeScene.map->GetSizeX();
+	int mapHeight = Game::activeScene.map->GetSizeY();
+
+	// Clear map
+	for (int nx = 0; nx < mapWidth; nx++)
+	{
+		for (int ny = 0; ny < mapHeight; ny++)
+		{
+			char tile = '.';
+
+			Screen::screen[(ny + 1)*Screen::screenSizeX + nx] = tile;
+		}
+	}
+
+	// Display objects
+	std::vector<GameObject*> allGos = Game::activeScene.GetAllGameObjects();
+	std::vector<GameObject*>::iterator iter;
+	for (iter = allGos.begin(); iter != allGos.end(); iter++) 
+	{
+		char tile = (*iter)->icon;
+
+		Screen::Set((*iter)->transform->x / Map::TILE_WIDTH, (*iter)->transform->y / Map::TILE_HEIGHT, tile);
+	}
 
 	// Display Frame
 	Screen::screen[Screen::screenSizeX * Screen::screenSizeY - 1] = '\0';

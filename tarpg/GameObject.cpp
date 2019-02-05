@@ -4,11 +4,13 @@
 #include "Game.h"
 #include "Scene.h"
 
-GameObject::GameObject() : GameObject::GameObject("New GameObject") {}
+GameObject::GameObject() : GameObject::GameObject("New GameObject", '/0') {}
+GameObject::GameObject(std::string name) : GameObject::GameObject(name, '/0') {}
 
-GameObject::GameObject(std::string name)
+GameObject::GameObject(std::string name, char icon)
 {
 	this->name = name;
+	this->icon = icon;
 
 	transform = AddComponent<Transform>();
 	renderer = AddComponent<Renderer>();

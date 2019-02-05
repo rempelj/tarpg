@@ -5,6 +5,8 @@
 #include "Screen.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "Game.h"
+#include "Scene.h"
 
 Renderer::Renderer(GameObject *go) : GameComponent::GameComponent(go)
 {
@@ -29,9 +31,12 @@ void Renderer::Render()
 		
 		if (currentChar != ' ')
 		{
+			float worldX = gameObject->transform->x + x;
+			float worldY = gameObject->transform->y + y;
+
 			Screen::Set(
-				(int)std::round(gameObject->transform->x + x),
-				(int)std::round(gameObject->transform->y + y - graphicSizeY + 1),	// render bottom-left char at my position
+				(int)std::round(worldX - Game::activeScene.camX / 2),
+				(int)std::round(worldY - Game::activeScene.camY / 2 - graphicSizeY + 1),	// render bottom-left char at my position
 				currentChar
 			);
 		}

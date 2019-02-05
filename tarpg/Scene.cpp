@@ -40,3 +40,8 @@ void Scene::AddGameObject(GameObject *gameObject)
 {
 	gameObjects.push_back(gameObject);
 }
+
+std::vector<GameObject*> Scene::GetAllGameObjects()
+{
+	return gameObjects;
+}
