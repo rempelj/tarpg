@@ -1,5 +1,6 @@
 #include <string>
 #include <assert.h>
+#include <cstdlib>
 
 #include "Renderer.h"
 #include "Screen.h"
@@ -34,11 +35,19 @@ void Renderer::Render()
 			float worldX = gameObject->transform->x + x;
 			float worldY = gameObject->transform->y + y;
 
-			Screen::Set(
-				(int)std::round(worldX - Game::activeScene.camX / 2),
-				(int)std::round(worldY - Game::activeScene.camY / 2 - graphicSizeY + 1),	// render bottom-left char at my position
-				currentChar
-			);
+			// set character invisible if distance from camera is greater than distance from camera to screen edge
+			bool isPixelHidden = (abs(worldX - Game::activeScene.camX) > (Screen::screenSizeX) / 2.0) ||
+				(abs(worldY - Game::activeScene.camY) > (Screen::screenSizeY) / 2.0);
+
+			if (!isPixelHidden)
+			{
+				Screen::Set(
+					(int)std::round(worldX - Game::activeScene.camX + Screen::screenSizeX / 2.0),
+					(int)std::round((worldY - graphicSizeY + 1) - Game::activeScene.camY + Screen::screenSizeY/2.0),	// render bottom-left char at my position
+					currentChar
+				);
+			}
+			
 		}
 
 		// next char
