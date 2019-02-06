@@ -3,7 +3,6 @@
 
 #include "Main.h"
 #include "Screen.h"
-#include "WindowsScreenBuffer.h"
 #include "Map.h"
 
 int main()

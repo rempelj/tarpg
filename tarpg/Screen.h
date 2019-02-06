@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ScreenBuffer.h"
+#include "WindowsScreenBuffer.h"
+
 namespace Screen
 {
 	extern wchar_t *screen;

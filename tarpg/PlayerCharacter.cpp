@@ -1,5 +1,3 @@
-#include <Windows.h>
-
 #include "PlayerCharacter.h"
 #include "GameObject.h"
 #include "Time.h"
@@ -7,6 +5,7 @@
 #include "Renderer.h"
 #include "Game.h"
 #include "Scene.h"
+#include "Input.h"
 
 
 PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(go)
@@ -26,22 +25,22 @@ void PlayerCharacter::Update()
 	const float speed = 40;
 
 	// Handle Movement
-	if (GetAsyncKeyState(VK_UP))
+	if (Input::GetKey(Input::KeyCode::UpArrow))
 	{
 		gameObject->transform->y -= 1 * speed/2 * Time::deltaTime;
 	}
 
-	if (GetAsyncKeyState(VK_DOWN))
+	if (Input::GetKey(Input::KeyCode::DownArrow))
 	{
 		gameObject->transform->y += 1 * speed/2 * Time::deltaTime;
 	}
 
-	if (GetAsyncKeyState(VK_LEFT))
+	if (Input::GetKey(Input::KeyCode::LeftArrow))
 	{
 		gameObject->transform->x -= 1 * speed * Time::deltaTime;
 	}
 
-	if (GetAsyncKeyState(VK_RIGHT))
+	if (Input::GetKey(Input::KeyCode::RightArrow))
 	{
 		gameObject->transform->x += 1 * speed * Time::deltaTime;
 	}
