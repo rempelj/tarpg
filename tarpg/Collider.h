@@ -6,8 +6,27 @@
 
 class Collider : public GameComponent
 {
+	struct CellContents
+	{
+		std::vector<Collider*> colliders;
+	};
+
+	struct CellInfo
+	{
+		Collider::CellContents contents;
+		int x;
+		int y;
+
+		CellInfo(Collider::CellContents contents, int x, int y)
+		{
+			this->contents = contents;
+			this->x = x;
+			this->y = y;
+		}
+	};
+
 private:
-	static std::vector<std::vector<Collider*>> colliderGrid;
+	static std::vector<CellContents> colliderGrid;	// a grid reprsented as a 1d array
 	static int gridSizeX;
 	static int gridSizeY;
 
@@ -31,7 +50,8 @@ public:
 
 	void PreUpdate();
 	void Update();
+	void LateUpdate();
 
-	void GetAllCellsAtCurrentPosition(std::vector<Collider*>* results[]);
+	std::vector<CellInfo> GetAllCellsAtCurrentPosition();
 	bool Intersects(Collider *col);
 };

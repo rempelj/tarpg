@@ -2,10 +2,11 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Screen.h"
+#include "Renderer.h"
 
 #include <windows.h>
 
-std::vector<std::vector<Collider*>> Collider::colliderGrid;
+std::vector<Collider::CellContents> Collider::colliderGrid;
 int Collider::gridSizeX = 0;
 int Collider::gridSizeY = 0;
 
@@ -70,6 +71,7 @@ bool Collider::Intersects(Collider *col)
 
 void Collider::PreUpdate()
 {
+	
 	if (gameObject->transform->x != lastFrameX || gameObject->transform->y != lastFrameY)
 	{
 		// Position changed. Refresh position on grid
@@ -93,18 +95,13 @@ void Collider::PreUpdate()
 
 
 	// update collisions 
-	int numCells = sizeX * sizeY;
-	auto myCells = new std::vector<Collider*>*[numCells];
-	GetAllCellsAtCurrentPosition(myCells);
+	std::vector<Collider::CellInfo> myCells = GetAllCellsAtCurrentPosition();
 
-	for (int i = 0; i < numCells; i++)
-	{
-		auto cell = myCells[i];
-
+	for (CellInfo &cell : myCells) {
 		// trigger collision with all overlapped objects
-		for (int j = 0; j < cell->size(); j++)
+		for (int j = 0; j < cell.contents.colliders.size(); j++)
 		{
-			auto collision = (*cell)[j];
+			auto collision = cell.contents.colliders[j];
 
 			if (Intersects(collision))
 			{
@@ -119,12 +116,13 @@ void Collider::PreUpdate()
 			}
 
 		}
+		
 	}
 
-	delete[] myCells;
 
 	lastFrameX = gameObject->transform->x;
-	lastFrameX = gameObject->transform->y;
+	lastFrameY = gameObject->transform->y;
+	
 }
 
 void Collider::Update()
@@ -132,43 +130,38 @@ void Collider::Update()
 	
 }
 
+void Collider::LateUpdate()
+{
+}
+
 void Collider::AddToGrid()
 {
-	int numCells = sizeX * sizeY;
-	auto myCells = new std::vector<Collider*>*[numCells];
-	GetAllCellsAtCurrentPosition(myCells);
+	std::vector<Collider::CellInfo> myCells = GetAllCellsAtCurrentPosition();
 
-	for (int i = 0; i < numCells; i++)
-	{
-		auto cell = myCells[i];
-		cell->push_back(this);
+	for (CellInfo &cell : myCells) {
+		int gridIndex = cell.y * Collider::gridSizeX + cell.x;
+		Collider::colliderGrid[gridIndex].colliders.push_back(this);
 	}
 
-	delete[] myCells;
 }
 
 void Collider::RemoveFromGrid()
 {
-	int numCells = sizeX * sizeY;
-	auto myCells = new std::vector<Collider*>*[numCells];
-	GetAllCellsAtCurrentPosition(myCells);
+	std::vector<Collider::CellInfo> myCells = GetAllCellsAtCurrentPosition();
 
-	for (int i = 0; i < numCells; i++) 
+	for (CellInfo &cell : myCells) 
 	{
-		auto cell = myCells[i];
-		if (cell->size() > 0)
-		{
-			auto iter = std::find(cell->begin(), cell->end(), this);	// search cell for this collider
-			cell->erase(iter);
-		}
-		
+		int gridIndex = cell.y * Collider::gridSizeX + cell.x;
+
+		auto iter = std::find(Collider::colliderGrid[gridIndex].colliders.begin(), Collider::colliderGrid[gridIndex].colliders.end(), this);	// search cell for this collider
+	//	Collider::colliderGrid[gridIndex].colliders.erase(iter);
 	}
-	
-	delete[] myCells;
 }
 
-void Collider::GetAllCellsAtCurrentPosition(std::vector<Collider*> *results[])
+std::vector<Collider::CellInfo> Collider::GetAllCellsAtCurrentPosition()
 {
+	std::vector<Collider::CellInfo> results;
+
 	int startPosX = gameObject->transform->x + offsetX;
 	int startPosY = gameObject->transform->y + offsetY;
 	int endPosX = startPosX + sizeX;
@@ -206,9 +199,14 @@ void Collider::GetAllCellsAtCurrentPosition(std::vector<Collider*> *results[])
 				continue;
 			}
 
-			auto cell = Collider::colliderGrid[y * Collider::gridSizeX + x];
-			results[i] = &cell;
+			int gridIndex = y * Collider::gridSizeX + x;
+			CellContents cellContents = Collider::colliderGrid[gridIndex];
+			CellInfo cellInfo = Collider::CellInfo(cellContents, x, y);
+			results.push_back(cellInfo);
+			
 			i++;
 		}
 	}
+
+	return results;
 }

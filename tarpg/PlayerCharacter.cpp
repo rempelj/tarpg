@@ -22,7 +22,6 @@ PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(
 	gameObject->renderer->SetGraphic(playerGfx, 11, 5);
 
 	auto collider = gameObject->AddComponent<Collider>();
-
 }
 
 void PlayerCharacter::Update()
