@@ -30,6 +30,12 @@ private:
 	static int gridSizeX;
 	static int gridSizeY;
 
+	float lastFrameX;
+	float lastFrameY;
+
+	std::vector<CellInfo> allCellsAtCurrentPosition;
+	std::vector<CellInfo> allCellsAtLastPosition;
+
 	std::vector<Collider*> collisions;
 
 	void RemoveFromGrid();
@@ -54,4 +60,5 @@ public:
 
 	std::vector<CellInfo> GetAllCellsAtCurrentPosition();
 	bool Intersects(Collider *col);
+
 };

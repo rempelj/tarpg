@@ -4,28 +4,24 @@
 #include "Screen.h"
 #include "Renderer.h"
 
-#include <windows.h>
+#include "Debug.h"
 
 std::vector<Collider::CellContents> Collider::colliderGrid;
 int Collider::gridSizeX = 0;
 int Collider::gridSizeY = 0;
 
-namespace
-{
-	float lastFrameX;
-	float lastFrameY;
-}
-
 Collider::Collider(GameObject *go) : GameComponent::GameComponent(go)
 {
-	lastFrameX = gameObject->transform->x;
-	lastFrameX = gameObject->transform->y;
-
 	sizeX = 1;
 	sizeY = 1;
 	offsetX = 0;
 	offsetY = 0;
 
+	allCellsAtCurrentPosition = GetAllCellsAtCurrentPosition();
+	allCellsAtLastPosition = allCellsAtCurrentPosition;
+	lastFrameX = gameObject->transform->x;
+	lastFrameX = gameObject->transform->y;
+	
 	AddToGrid();
 }
 
@@ -36,12 +32,12 @@ Collider::~Collider()
 
 void Collider::OnCollisionEnterInternal(Collider *col)
 {
-	Beep(523, 500);
+	Debug::Log("OnCollisionEnterInternal");
 }
 
 void Collider::OnCollisionExitInternal(Collider *col)
 {
-
+	Debug::Log("OnCollisionExitInternal");
 }
 
 
@@ -60,7 +56,7 @@ bool Collider::Intersects(Collider *col)
 		int colBy2 = col->gameObject->transform->y + col->offsetY + col->sizeY;
 
 		if (colAx1 < colBx2 && colAx2 > colBx1 &&
-			colAy1 > colBy2 && colAy2 < colBy1)
+			colAy1 > colBy2 && colAy2 > colBy1)
 		{
 			return true;
 		}
@@ -71,7 +67,8 @@ bool Collider::Intersects(Collider *col)
 
 void Collider::PreUpdate()
 {
-	
+	allCellsAtCurrentPosition = GetAllCellsAtCurrentPosition();
+
 	if (gameObject->transform->x != lastFrameX || gameObject->transform->y != lastFrameY)
 	{
 		// Position changed. Refresh position on grid
@@ -95,9 +92,7 @@ void Collider::PreUpdate()
 
 
 	// update collisions 
-	std::vector<Collider::CellInfo> myCells = GetAllCellsAtCurrentPosition();
-
-	for (CellInfo &cell : myCells) {
+	for (CellInfo &cell : allCellsAtCurrentPosition) {
 		// trigger collision with all overlapped objects
 		for (int j = 0; j < cell.contents.colliders.size(); j++)
 		{
@@ -120,9 +115,9 @@ void Collider::PreUpdate()
 	}
 
 
+	allCellsAtLastPosition = allCellsAtCurrentPosition;
 	lastFrameX = gameObject->transform->x;
 	lastFrameY = gameObject->transform->y;
-	
 }
 
 void Collider::Update()
@@ -136,9 +131,7 @@ void Collider::LateUpdate()
 
 void Collider::AddToGrid()
 {
-	std::vector<Collider::CellInfo> myCells = GetAllCellsAtCurrentPosition();
-
-	for (CellInfo &cell : myCells) {
+	for (CellInfo &cell : allCellsAtCurrentPosition) {
 		int gridIndex = cell.y * Collider::gridSizeX + cell.x;
 		Collider::colliderGrid[gridIndex].colliders.push_back(this);
 	}
@@ -147,14 +140,15 @@ void Collider::AddToGrid()
 
 void Collider::RemoveFromGrid()
 {
-	std::vector<Collider::CellInfo> myCells = GetAllCellsAtCurrentPosition();
-
-	for (CellInfo &cell : myCells) 
+	for (CellInfo &cell : allCellsAtLastPosition)
 	{
 		int gridIndex = cell.y * Collider::gridSizeX + cell.x;
 
 		auto iter = std::find(Collider::colliderGrid[gridIndex].colliders.begin(), Collider::colliderGrid[gridIndex].colliders.end(), this);	// search cell for this collider
-	//	Collider::colliderGrid[gridIndex].colliders.erase(iter);
+		if (iter != Collider::colliderGrid[gridIndex].colliders.end())
+		{
+			Collider::colliderGrid[gridIndex].colliders.erase(iter);
+		}
 	}
 }
 
@@ -168,17 +162,15 @@ std::vector<Collider::CellInfo> Collider::GetAllCellsAtCurrentPosition()
 	int endPosY = startPosY + sizeY;
 
 	// resize grid if needed
+	int requiredGridSize = endPosX*endPosY;
+	int currentGridSize = Collider::gridSizeX * Collider::gridSizeY;
+
+	if (currentGridSize < requiredGridSize)
 	{
-		int requiredGridSize = endPosX*endPosY;
-		int currentGridSize = Collider::gridSizeX * Collider::gridSizeY;
+		Collider::gridSizeX = endPosX;
+		Collider::gridSizeY = endPosY;
 
-		if (currentGridSize < requiredGridSize)
-		{
-			Collider::gridSizeX = endPosX;
-			Collider::gridSizeY = endPosY;
-
-			Collider::colliderGrid.resize(requiredGridSize);
-		}
+		Collider::colliderGrid.resize(requiredGridSize);
 	}
 
 	// retrieve all cells at this object's position
@@ -187,20 +179,21 @@ std::vector<Collider::CellInfo> Collider::GetAllCellsAtCurrentPosition()
 	{
 		for (int y = startPosY; y < endPosY; y++)
 		{
-			if (x < 0 || y < 0)
-			{
-				// out of bounds
-				continue;
-			}
-
-			if (x * y >= Collider::colliderGrid.size())
-			{
-				// out of bounds
-				continue;
-			}
-
 			int gridIndex = y * Collider::gridSizeX + x;
-			CellContents cellContents = Collider::colliderGrid[gridIndex];
+
+			if (gridIndex < 0)
+			{
+				// out of bounds
+				continue;
+			}
+
+			if (gridIndex >= Collider::colliderGrid.size())
+			{
+				// out of bounds
+				continue;
+			}
+			
+			CellContents cellContents = Collider::colliderGrid.at(gridIndex);
 			CellInfo cellInfo = Collider::CellInfo(cellContents, x, y);
 			results.push_back(cellInfo);
 			

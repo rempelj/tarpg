@@ -1,4 +1,4 @@
-
+#include "Collider.h"
 #include "Wall.h"
 #include "GameObject.h"
 #include "Transform.h"
@@ -16,5 +16,10 @@ Wall::Wall(GameObject *go) : GameComponent::GameComponent(go)
 	gfx += LR"(############)";
 
 	gameObject->renderer->SetGraphic(gfx, 12, 6);
+
+
+	auto collider = gameObject->AddComponent<Collider>();
+	collider->sizeX = 12;
+	collider->sizeY = 6;
 }
 
