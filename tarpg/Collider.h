@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 
 #include "GameComponent.h"
 
@@ -38,6 +39,8 @@ private:
 
 	std::vector<Collider*> collisions;
 
+	std::function<void(Collider*)> onCollisionEnter;
+
 	void RemoveFromGrid();
 	void AddToGrid();
 
@@ -60,5 +63,7 @@ public:
 
 	std::vector<CellInfo> GetAllCellsAtCurrentPosition();
 	bool Intersects(Collider *col);
+
+	void AddOnCollisionEnterHandler(std::function<void(Collider*)> const &);
 
 };

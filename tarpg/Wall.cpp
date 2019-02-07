@@ -20,6 +20,6 @@ Wall::Wall(GameObject *go) : GameComponent::GameComponent(go)
 
 	auto collider = gameObject->AddComponent<Collider>();
 	collider->sizeX = 12;
-	collider->sizeY = 6;
+	collider->sizeY = 16;
 }
 

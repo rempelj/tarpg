@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "Scene.h"
 #include "Input.h"
-
+#include "Debug.h"
 #include "Collider.h"
 
 
@@ -25,6 +25,21 @@ PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(
 	collider->sizeX = 11;
 	collider->sizeY = 5;
 
+	// TODO - remove this (here for debugging)
+	collider->AddOnCollisionEnterHandler([&](Collider *collision) 
+	{
+		Debug::Log("Collided with something");
+
+		std::wstring gfx;
+		gfx += LR"(............)";
+		gfx += LR"(............)";
+		gfx += LR"(............)";
+		gfx += LR"(............)";
+		gfx += LR"(............)";
+		gfx += LR"(............)";
+
+		collision->gameObject->renderer->SetGraphic(gfx, 12, 6);
+	});
 }
 
 void PlayerCharacter::Update()

@@ -33,6 +33,11 @@ Collider::~Collider()
 void Collider::OnCollisionEnterInternal(Collider *col)
 {
 	Debug::Log("OnCollisionEnterInternal");
+
+	if (onCollisionEnter != nullptr)
+	{
+		onCollisionEnter(col);
+	}
 }
 
 void Collider::OnCollisionExitInternal(Collider *col)
@@ -56,7 +61,7 @@ bool Collider::Intersects(Collider *col)
 		int colBy2 = col->gameObject->transform->y + col->offsetY + col->sizeY;
 
 		if (colAx1 < colBx2 && colAx2 > colBx1 &&
-			colAy1 > colBy2 && colAy2 > colBy1)
+			colAy1 < colBy2 && colAy2 > colBy1)
 		{
 			return true;
 		}
@@ -202,4 +207,10 @@ std::vector<Collider::CellInfo> Collider::GetAllCellsAtCurrentPosition()
 	}
 
 	return results;
+}
+
+
+void Collider::AddOnCollisionEnterHandler(std::function<void(Collider*)> const & handler)
+{
+	onCollisionEnter = handler;
 }
