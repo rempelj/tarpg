@@ -7,6 +7,8 @@
 #include "Scene.h"
 #include "Input.h"
 
+#include "Collider.h"
+
 
 PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(go)
 {
@@ -18,6 +20,9 @@ PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(
 	playerGfx += LR"(    L  L   )";
 
 	gameObject->renderer->SetGraphic(playerGfx, 11, 5);
+
+	auto collider = gameObject->AddComponent<Collider>();
+
 }
 
 void PlayerCharacter::Update()

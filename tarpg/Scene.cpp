@@ -16,7 +16,17 @@ void Scene::Update()
 {
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
+		gameObjects[i]->PreUpdate();
+	}
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
 		gameObjects[i]->Update();
+	}
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		gameObjects[i]->LateUpdate();
 	}
 }
 

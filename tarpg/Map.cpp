@@ -32,17 +32,19 @@ void Map::ApplyToActiveScene()
 
 		if (tile == '@')
 		{
-			GameObject *player = new GameObject("Player");
-			player->AddComponent<PlayerCharacter>();
-			player->transform->x = x * Map::TILE_WIDTH;
-			player->transform->y = y * Map::TILE_HEIGHT;
+			GameObject *go = new GameObject("Player");
+			go->transform->x = x * Map::TILE_WIDTH;
+			go->transform->y = y * Map::TILE_HEIGHT;
+
+			go->AddComponent<PlayerCharacter>();
 		}
 		else if (tile == '#')
 		{
-			GameObject *wall = new GameObject("Wall", '#');
-			wall->AddComponent<Wall>();
-			wall->transform->x = x * Map::TILE_WIDTH;
-			wall->transform->y = y * Map::TILE_HEIGHT;
+			GameObject *go = new GameObject("Wall", '#');
+			go->transform->x = x * Map::TILE_WIDTH;
+			go->transform->y = y * Map::TILE_HEIGHT;
+
+			go->AddComponent<Wall>();
 		}
 
 		// next tile position 

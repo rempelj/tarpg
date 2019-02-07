@@ -7,6 +7,7 @@
 class GameComponent;
 class Transform;
 class Renderer;
+class Scene;
 
 class GameObject
 {
@@ -17,6 +18,8 @@ public:
 	std::string name;
 	char icon;
 
+	Scene *scene;
+
 	Transform *transform;
 	Renderer *renderer;
 
@@ -25,7 +28,9 @@ public:
 	GameObject(std::string name, char icon);
 	~GameObject();
 
+	void PreUpdate();
 	void Update();
+	void LateUpdate();
 
 	template<class T>T* AddComponent();
 };
