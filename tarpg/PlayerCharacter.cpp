@@ -21,6 +21,7 @@ PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(
 
 	gameObject->renderer->SetGraphic(playerGfx, 11, 5);
 
+	/*
 	auto collider = gameObject->AddComponent<Collider>();
 	collider->sizeX = 11;
 	collider->sizeY = 5;
@@ -40,6 +41,7 @@ PlayerCharacter::PlayerCharacter(GameObject *go) : GameComponent::GameComponent(
 
 		collision->gameObject->renderer->SetGraphic(gfx, 12, 6);
 	});
+	*/
 }
 
 void PlayerCharacter::Update()
